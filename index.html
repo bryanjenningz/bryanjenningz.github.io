@@ -1,10 +1,28 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Bryan Jennings</title>
-</head>
-<body>
-  <script src="index.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Japanese Popup Dictionary</title>
+    <style>
+      #text, #popup {
+        max-width: 600px;
+      }
+      #popup {
+        position: fixed;
+        background-color: cyan;
+        left: 0;
+        bottom: 0;
+        padding: 5px; 
+      }
+    </style>
+  </head>
+  <body>
+    <input>
+    <button>Save</button>
+    <div id="text">Paste Japanese text into the input box, then press the "Save" button to save the text. After that, you can click on any Japanese words that you don't know to look them up.</div>
+    <div id="popup"></div>
+
+    <script src="dictionary.js"></script>
+    <script src="index.js"></script>
+  </body>
 </html>
