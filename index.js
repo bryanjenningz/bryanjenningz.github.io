@@ -2,11 +2,32 @@ var textContainer = document.querySelector('#text')
 var popup = document.querySelector('#popup')
 var button = document.querySelector('button')
 var input = document.querySelector('input')
+
 var characters = []
 var text
 
+// It's simpler to just create a global reference to popupRemoveButton
+// than redefining it every time I want to rerender the popup translation.
+var popupRemoveButton = document.createElement('button')
+popupRemoveButton.setAttribute('id', 'popup-remove')
+popupRemoveButton.textContent = '✖'
+popupRemoveButton.addEventListener('click', e => {
+  popup.setAttribute('hidden', true)
+})
+
 var displayTranslation = ({word, translations}) => {
-  popup.innerHTML = 'word: ' + word + ', translation: ' + translations.join(', ')
+  popup.innerHTML = ''
+  popup.removeAttribute('hidden')
+
+  var wordHTML = document.createElement('div')
+  wordHTML.textContent = 'Word: ' + word
+  popup.appendChild(wordHTML)
+
+  var translationHTML = document.createElement('div')
+  translationHTML.textContent = 'Translation: ' + translations.join(', ')
+  popup.appendChild(translationHTML)
+
+  popup.appendChild(popupRemoveButton)
 }
 
 button.addEventListener('click', e => {
@@ -19,12 +40,15 @@ button.addEventListener('click', e => {
     el.textContent = ch
     return el
   }).forEach((el, i) => {
-    // The reason why I'm appending each element to the DOM is so that I can get
+    // The reason why I'm appending each element to the DOM in a span tag is so that I can get
     // the character's x-position, which is more accurate than the offsetIndex 
     // method. Sadly, the y-position isn't accurate for this method because it doesn't
     // take into consideration the scrollY value, and the scrollY value isn't compatible
     // across all browsers, so I have to just compare the offsetIndex to be able to
     // determine which character gets touched by the user.
+    // I remove the span tags at the end and replace it with just text so that I can take
+    // advantage of the document.caretRangeFromPoint method which is dependent on my using
+    // plain text.
     textContainer.appendChild(el)
     var sides = el.getClientRects()[0]
     characters.push(Object.assign(
