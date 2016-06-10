@@ -2,17 +2,11 @@ var textContainer = document.querySelector('#text')
 var popup = document.querySelector('#popup')
 var button = document.querySelector('button')
 var input = document.querySelector('input')
-// Global variables from other files:
-// dictionary, kanjiDictionary, text
+// Global variables from other files: dictionary, kanjiDictionary
 
 var characters = []
 var text
 
-if (typeof localStorage.getItem('text') === 'string' &&
-    localStorage.getItem('text').length > 0) {
-  text = localStorage.getItem('text')
-  textContainer.textContent = text
-}
 
 // It's simpler to just create a global reference to popupRemoveButton
 // than redefining it every time I want to rerender the popup translation.
@@ -22,6 +16,7 @@ popupRemoveButton.textContent = '✖'
 popupRemoveButton.addEventListener('click', e => {
   popup.setAttribute('hidden', true)
 })
+
 
 var displayTranslation = ({word, translations}) => {
   popup.innerHTML = ''
@@ -38,8 +33,9 @@ var displayTranslation = ({word, translations}) => {
   popup.appendChild(popupRemoveButton)
 }
 
-button.addEventListener('click', e => {
-  text = input.value
+
+var saveText = () => {
+  text = input.value || localStorage.getItem('text') || ''
   input.value = ''
   textContainer.textContent = ''
 
@@ -75,9 +71,9 @@ button.addEventListener('click', e => {
   } else {
     localStorage.removeItem('text')
   }
-})
+}
 
-textContainer.addEventListener('click', e => {
+var lookupWord = e => {
   // offsetIndex isn't a reliable source for determining the character, since it 
   // tends to give the character to the right if you click the right side of a character.
   // To fix this, I'm going to use e.clientX, which gives a more accurate x-value,
@@ -109,4 +105,15 @@ textContainer.addEventListener('click', e => {
   if (kanjiDictionary[text[offsetIndex]]) {
     displayTranslation({word: text[offsetIndex], translations: [kanjiDictionary[text[offsetIndex]]]})
   }
-})
+}
+
+
+button.addEventListener('click', saveText)
+textContainer.addEventListener('click', lookupWord)
+
+
+if (typeof localStorage.getItem('text') === 'string' &&
+    localStorage.getItem('text').length > 0) {
+  saveText()
+}
+
