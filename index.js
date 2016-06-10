@@ -2,11 +2,17 @@ var textContainer = document.querySelector('#text')
 var popup = document.querySelector('#popup')
 var button = document.querySelector('button')
 var input = document.querySelector('input')
-// We also have global variables, dictionary and kanjiDictionary,
-// from the other files.
+// Global variables from other files:
+// dictionary, kanjiDictionary, text
 
 var characters = []
 var text
+
+if (typeof localStorage.getItem('text') === 'string' &&
+    localStorage.getItem('text').length > 0) {
+  text = localStorage.getItem('text')
+  textContainer.textContent = text
+}
 
 // It's simpler to just create a global reference to popupRemoveButton
 // than redefining it every time I want to rerender the popup translation.
@@ -61,6 +67,14 @@ button.addEventListener('click', e => {
   })
 
   textContainer.textContent = text
+
+  // Store the text if there's something in the text box, clear the stored value if 
+  // there's nothing in the text box.
+  if (text.length < 10000 && text.length > 0) {
+    localStorage.setItem('text', text)
+  } else {
+    localStorage.removeItem('text')
+  }
 })
 
 textContainer.addEventListener('click', e => {
@@ -96,4 +110,3 @@ textContainer.addEventListener('click', e => {
     displayTranslation({word: text[offsetIndex], translations: [kanjiDictionary[text[offsetIndex]]]})
   }
 })
-
