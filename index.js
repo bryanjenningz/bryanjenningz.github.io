@@ -2,6 +2,8 @@ var textContainer = document.querySelector('#text')
 var popup = document.querySelector('#popup')
 var button = document.querySelector('button')
 var input = document.querySelector('input')
+// We also have global variables, dictionary and kanjiDictionary,
+// from the other files.
 
 var characters = []
 var text
@@ -85,8 +87,13 @@ textContainer.addEventListener('click', e => {
     var word = text.slice(offsetIndex, offsetIndex + wordLength)
     if (dictionary[word]) {
       displayTranslation({word, translations: dictionary[word]})
-      break
+      return
     }
+  }
+
+  // If there were no translations found for the dictionary, check the kanji dictionary...
+  if (kanjiDictionary[text[offsetIndex]]) {
+    displayTranslation({word: text[offsetIndex], translations: [kanjiDictionary[text[offsetIndex]]]})
   }
 })
 
