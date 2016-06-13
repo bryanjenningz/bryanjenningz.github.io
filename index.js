@@ -2,11 +2,6 @@ var textContainer = document.querySelector('#text')
 var popup = document.querySelector('#popup')
 var button = document.querySelector('button')
 var input = document.querySelector('input')
-// Global variables from other files: dictionary, kanjiDictionary
-
-var characters = []
-var text
-
 
 // It's simpler to just create a global reference to popupRemoveButton
 // than redefining it every time I want to rerender the popup translation.
@@ -17,6 +12,10 @@ popupRemoveButton.addEventListener('click', e => {
   popup.setAttribute('hidden', true)
 })
 
+// Global variables from other files: dictionary, kanjiDictionary.
+// The text variable is the only global variable that we use to keep track 
+// of the state. It stores the Japanese text that the user entered in.
+var text
 
 var displayTranslation = ({word, translations}) => {
   popup.innerHTML = ''
@@ -33,7 +32,6 @@ var displayTranslation = ({word, translations}) => {
   popup.appendChild(popupRemoveButton)
 }
 
-
 var saveText = () => {
   text = input.value || localStorage.getItem('text') || ''
   input.value = ''
@@ -46,8 +44,6 @@ var saveText = () => {
     textContainer.appendChild(el)
   })
 
-  // Store the text if there's something in the text box, clear the stored value if 
-  // there's nothing in the text box.
   if (text.length < 10000 && text.length > 0) {
     localStorage.setItem('text', text)
   } else {
@@ -62,7 +58,6 @@ var lookupWord = e => {
     return
   }
 
-  // Check word definitions for the 10-character word, then 9, then 8, 7, ..., 2, 1
   for (var wordLength = 10; wordLength > 0; wordLength--) {
     var word = text.slice(wordStartIndex, wordStartIndex + wordLength)
     if (dictionary[word]) {
@@ -77,13 +72,10 @@ var lookupWord = e => {
   }
 }
 
-
 button.addEventListener('click', saveText)
 textContainer.addEventListener('click', lookupWord)
-
 
 if (typeof localStorage.getItem('text') === 'string' &&
     localStorage.getItem('text').length > 0) {
   saveText()
 }
-
