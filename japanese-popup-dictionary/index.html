@@ -48,15 +48,22 @@
   </head>
   <body>
     <input placeholder="Paste in Japanese">
+    <button id="copy-button" data-clipboard-action="copy" data-clipboard-target="#popup">Copy</button>
     <button>Save</button>
     <div id="text">
       <p>Paste Japanese text into the input box, then press the "Save" button to save the text.</p>
       <p>After that, you can click on any Japanese words that you don't know to look them up.</p>
     </div>
     <div id="popup" hidden></div>
-
     <script src="dictionary.js"></script>
     <script src="kanji-dictionary.js"></script>
     <script src="index.js"></script>
+
+    <script src="clipboard.min.js"></script>
+    <script>
+      var clipboard = new Clipboard('#copy-button')
+      clipboard.on('success', e => console.log(e))
+      clipboard.on('error', e => console.log(e))
+    </script>
   </body>
 </html>
