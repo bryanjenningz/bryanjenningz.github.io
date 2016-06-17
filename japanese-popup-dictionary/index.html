@@ -8,6 +8,14 @@
       body {
         padding-top: 10px;
       }
+      #top-bar {
+        position: fixed;
+        background-color: cyan;
+        top: 0;
+        left: 0;
+        width: 600px;
+        padding: 5px;
+      }
       input {
         width: 140px;
         height: 34px;
@@ -21,7 +29,7 @@
         max-width: 600px;
       }
       #text {
-        margin-top: 15px;
+        margin-top: 50px;
         font-size: 50px;
         line-height: 105%;
       }
@@ -47,9 +55,11 @@
     </style>
   </head>
   <body>
-    <input placeholder="Paste in Japanese">
-    <button>Save</button>
-    <button id="copy-button" data-clipboard-action="copy" data-clipboard-target="#popup" hidden>Copy</button>
+    <div id="top-bar">
+      <input placeholder="Paste in Japanese">
+      <button>Save</button>
+      <button id="copy-button" data-clipboard-action="copy" data-clipboard-target="#popup div" hidden>Copy</button>
+    </div>
     <div id="text">
       <p>Paste Japanese text into the input box, then press the "Save" button to save the text.</p>
       <p>After that, you can click on any Japanese words that you don't know to look them up.</p>

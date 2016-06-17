@@ -24,13 +24,16 @@ var displayTranslation = ({word, translations}) => {
   popup.removeAttribute('hidden')
   copyButton.removeAttribute('hidden')
 
+  var translationContainer = document.createElement('div')
+  popup.appendChild(translationContainer)
+
   var wordHTML = document.createElement('div')
   wordHTML.textContent = 'Word: ' + word
-  popup.appendChild(wordHTML)
+  translationContainer.appendChild(wordHTML)
 
   var translationHTML = document.createElement('div')
   translationHTML.textContent = 'Translation: ' + translations.join(', ')
-  popup.appendChild(translationHTML)
+  translationContainer.appendChild(translationHTML)
 
   popup.appendChild(popupRemoveButton)
 }
