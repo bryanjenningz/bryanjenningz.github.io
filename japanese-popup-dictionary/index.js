@@ -2,6 +2,7 @@ var textContainer = document.querySelector('#text')
 var popup = document.querySelector('#popup')
 var button = document.querySelector('button')
 var input = document.querySelector('input')
+var copyButton = document.querySelector('#copy-button')
 
 // It's simpler to just create a global reference to popupRemoveButton
 // than redefining it every time I want to rerender the popup translation.
@@ -10,6 +11,7 @@ popupRemoveButton.setAttribute('id', 'popup-remove')
 popupRemoveButton.textContent = '✖'
 popupRemoveButton.addEventListener('click', e => {
   popup.setAttribute('hidden', true)
+  copyButton.setAttribute('hidden', true)
 })
 
 // Global variables from other files: dictionary, kanjiDictionary.
@@ -20,6 +22,7 @@ var text
 var displayTranslation = ({word, translations}) => {
   popup.innerHTML = ''
   popup.removeAttribute('hidden')
+  copyButton.removeAttribute('hidden')
 
   var wordHTML = document.createElement('div')
   wordHTML.textContent = 'Word: ' + word
