@@ -18,6 +18,7 @@ popupRemoveButton.addEventListener('click', e => {
 // The text variable is the only global variable that we use to keep track 
 // of the state. It stores the Japanese text that the user entered in.
 var text
+var clickedSpan
 
 var displayTranslation = ({word, translations}) => {
   popup.innerHTML = ''
@@ -58,6 +59,18 @@ var saveText = () => {
 }
 
 var lookupWord = e => {
+  if (clickedSpan) {
+    clickedSpan.style.backgroundColor = 'white'
+  }
+
+  if (e.target.getAttribute('data-index')) {
+    clickedSpan = e.target
+    clickedSpan.style.backgroundColor = 'cyan'
+  } else {
+    // The user didn't click on a word, so don't do anything.
+    return
+  }
+
   var wordStartIndex = Number(e.target.getAttribute('data-index'))
 
   if (wordStartIndex == undefined) {
