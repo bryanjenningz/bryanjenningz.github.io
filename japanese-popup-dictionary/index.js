@@ -19,6 +19,23 @@ popupRemoveButton.addEventListener('click', e => {
 // of the state. It stores the Japanese text that the user entered in.
 var text
 var clickedSpan
+var dictionaryEntries = (function getFileSync(url) {
+    var request = new XMLHttpRequest()
+    request.open('GET', url, false)
+    request.send(null)
+    return request.responseText
+  })(location.href.replace(/\/[^\/]+$/, '') + '/dictionary.txt')
+  .split('\n')
+  .map(function(line) {
+    var lineSplit = line.split(' ')
+    var word = lineSplit[0]
+    // If there's no pronunciation in the entry, that means the word is all hiragana or katakana, so just use the word as pronunciation
+    var hasPronunciation = /\[[^\]]+\]/.test(lineSplit[1])
+    var pronunciation =  hasPronunciation ? lineSplit[1].replace(/[\[\]]/g, '') : word
+    var translation = lineSplit.slice(hasPronunciation ? 2 : 1).join(' ')
+
+    return {word, pronunciation, translation}
+  })
 
 var displayTranslation = ({word, translations}) => {
   popup.innerHTML = ''
