@@ -92,18 +92,6 @@ var lookupWord = e => {
     return
   }
 
-  
-  // var start = new Date().getTime()
-  // var results = []
-  // for (var i = 0; i < dictionaryEntries.length; i++) {
-  //   if (dictionaryEntries[i].pronunciation === word ||
-  //       dictionaryEntries[i].word === word) {
-  //     results.push(dictionaryEntries[i])
-  //   }
-  // }
-  // var end = new Date().getTime()
-  // console.log('time elapsed: ' + (end - start))
-
   var results = []
   var wordsTried = {}
   for (var wordLength = 10; wordLength > 0; wordLength--) {
