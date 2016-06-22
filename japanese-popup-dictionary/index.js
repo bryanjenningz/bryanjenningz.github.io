@@ -117,7 +117,7 @@ var lookupWord = e => {
 
   // If there were no translations found for the dictionary, check the kanji dictionary...
   if (kanjiDictionary[text[wordStartIndex]]) {
-    displayTranslation([{word: text[wordStartIndex], pronunciation: text[wordStartIndex], translation: kanjiDictionary[text[wordStartIndex]]})
+    displayTranslation([{word: text[wordStartIndex], pronunciation: text[wordStartIndex], translation: kanjiDictionary[text[wordStartIndex]]}])
   }
 }
 
