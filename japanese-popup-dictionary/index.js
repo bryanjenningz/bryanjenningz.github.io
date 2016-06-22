@@ -104,15 +104,19 @@ var lookupWord = e => {
   // var end = new Date().getTime()
   // console.log('time elapsed: ' + (end - start))
 
+  var results = []
   for (var wordLength = 10; wordLength > 0; wordLength--) {
     var word = text.slice(wordStartIndex, wordStartIndex + wordLength)
     var entries = dictionaryEntries.filter(function(entry) {
       return entry.word === word || entry.pronunciation === word
     })
-    if (dictionary[word]) {
-      displayTranslations(entries)
-      return
+    if (entries.length > 0) {
+      results.push(...entries)
     }
+  }
+  if (results.length > 0) {
+    displayTranslations(results.slice(0, 7))
+    return
   }
 
   // If there were no translations found for the dictionary, check the kanji dictionary...
