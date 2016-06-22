@@ -105,14 +105,18 @@ var lookupWord = e => {
   // console.log('time elapsed: ' + (end - start))
 
   var results = []
+  var wordsTried = {}
   for (var wordLength = 10; wordLength > 0; wordLength--) {
     var word = text.slice(wordStartIndex, wordStartIndex + wordLength)
-    var entries = dictionaryEntries.filter(function(entry) {
-      return entry.word === word || entry.pronunciation === word
-    })
-    if (entries.length > 0) {
-      results.push(...entries)
+    if (!wordsTried[word]) {
+      var entries = dictionaryEntries.filter(function(entry) {
+        return entry.word === word || entry.pronunciation === word
+      })
+      if (entries.length > 0) {
+        results.push(...entries)
+      }
     }
+    wordsTried[word] = true
   }
   if (results.length > 0) {
     displayTranslations(results.slice(0, 7))
