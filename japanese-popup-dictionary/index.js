@@ -57,7 +57,7 @@ var displayTranslations = (dictionaryEntries) => {
     elButton.textContent = 'Copy'
     clipboards.push(new Clipboard('#copy-' + i))
 
-    entryHtml.appendChild(elButton)
+    entryHTML.appendChild(elButton)
     translationContainer.appendChild(entryHTML)
   })
 
