@@ -37,7 +37,7 @@ var dictionaryEntries = (function getFileSync(url) {
     return {word, pronunciation, translation}
   })
 
-var displayTranslation = ({word, translations}) => {
+var displayTranslations = (dictionaryEntries) => {
   popup.innerHTML = ''
   popup.removeAttribute('hidden')
   copyButton.removeAttribute('hidden')
@@ -45,13 +45,11 @@ var displayTranslation = ({word, translations}) => {
   var translationContainer = document.createElement('div')
   popup.appendChild(translationContainer)
 
-  var wordHTML = document.createElement('div')
-  wordHTML.textContent = 'Word: ' + word
-  translationContainer.appendChild(wordHTML)
-
-  var translationHTML = document.createElement('div')
-  translationHTML.textContent = 'Translation: ' + translations.join(', ')
-  translationContainer.appendChild(translationHTML)
+  dictionaryEntries.forEach(entry => {
+    var entryHTML = document.createElement('div')
+    entryHTML.textContent = entry.word + ': ' + entry.pronunciation + ' ' + entry.translation
+    translationContainer.appendChild(entryHTML)
+  })
 
   popup.appendChild(popupRemoveButton)
 }
@@ -94,17 +92,32 @@ var lookupWord = e => {
     return
   }
 
+  
+  // var start = new Date().getTime()
+  // var results = []
+  // for (var i = 0; i < dictionaryEntries.length; i++) {
+  //   if (dictionaryEntries[i].pronunciation === word ||
+  //       dictionaryEntries[i].word === word) {
+  //     results.push(dictionaryEntries[i])
+  //   }
+  // }
+  // var end = new Date().getTime()
+  // console.log('time elapsed: ' + (end - start))
+
   for (var wordLength = 10; wordLength > 0; wordLength--) {
     var word = text.slice(wordStartIndex, wordStartIndex + wordLength)
+    var entries = dictionaryEntries.filter(function(entry) {
+      return entry.word === word || entry.pronunciation === word
+    })
     if (dictionary[word]) {
-      displayTranslation({word, translations: dictionary[word]})
+      displayTranslation(entries)
       return
     }
   }
 
   // If there were no translations found for the dictionary, check the kanji dictionary...
   if (kanjiDictionary[text[wordStartIndex]]) {
-    displayTranslation({word: text[wordStartIndex], translations: [kanjiDictionary[text[wordStartIndex]]]})
+    displayTranslation([{word: text[wordStartIndex], pronunciation: text[wordStartIndex], translation: kanjiDictionary[text[wordStartIndex]]})
   }
 }
 
