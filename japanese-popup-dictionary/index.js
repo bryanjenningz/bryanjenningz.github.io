@@ -14,11 +14,11 @@ popupRemoveButton.addEventListener('click', e => {
   copyButton.setAttribute('hidden', true)
 })
 
-// Global variables from other files: dictionary, kanjiDictionary.
-// The text variable is the only global variable that we use to keep track 
-// of the state. It stores the Japanese text that the user entered in.
+var clipboard = new Clipboard('#copy-button')
+
 var text
 var clickedSpan
+var clipboards = []
 var dictionaryEntries = (function getFileSync(url) {
     var request = new XMLHttpRequest()
     request.open('GET', url, false)
@@ -41,13 +41,23 @@ var displayTranslations = (dictionaryEntries) => {
   popup.innerHTML = ''
   popup.removeAttribute('hidden')
   copyButton.removeAttribute('hidden')
+  clipboards.forEach(clipboard => clipboard.destroy())
 
   var translationContainer = document.createElement('div')
   popup.appendChild(translationContainer)
 
-  dictionaryEntries.forEach(entry => {
+  dictionaryEntries.forEach((entry, i) => {
     var entryHTML = document.createElement('div')
     entryHTML.textContent = entry.word + ': ' + entry.pronunciation + ' ' + entry.translation
+
+    var elButton = document.createElement('button')
+    elButton.setAttribute('id', 'copy-' + i)
+    elButton.setAttribute('data-clipboard-action', 'copy')
+    elButton.setAttribute('data-clipboard-target', '#popup div:nth-child(' + (i + 1) + ')')
+    elButton.textContent = 'Copy'
+    clipboards.push(new Clipboard('#copy-' + i))
+
+    entryHtml.appendChild(elButton)
     translationContainer.appendChild(entryHTML)
   })
 
@@ -124,3 +134,5 @@ if (typeof localStorage.getItem('text') === 'string' &&
     localStorage.getItem('text').length > 0) {
   saveText()
 }
+
+

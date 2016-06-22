@@ -42,8 +42,16 @@
         background-color: cyan;
         left: 0;
         bottom: 0;
-        padding: 5px;
+        /* 30px padding on the right for the remove button */
+        padding: 5px 30px 5px 5px;
         word-break: break-word;
+      }
+      #popup div {
+        position: relative;
+      }
+      #popup div button {
+        position: absolute;
+        left: 0;
       }
       #popup-remove {
         position: absolute;
@@ -65,15 +73,10 @@
       <p>After that, you can click on any Japanese words that you don't know to look them up.</p>
     </div>
     <div id="popup" hidden></div>
+
+    <script src="clipboard.min.js"></script>
     <script src="dictionary.js"></script>
     <script src="kanji-dictionary.js"></script>
     <script src="index.js"></script>
-
-    <script src="clipboard.min.js"></script>
-    <script>
-      var clipboard = new Clipboard('#copy-button')
-      clipboard.on('success', e => console.log(e))
-      clipboard.on('error', e => console.log(e))
-    </script>
   </body>
 </html>
