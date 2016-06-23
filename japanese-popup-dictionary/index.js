@@ -47,17 +47,19 @@ var displayTranslations = (dictionaryEntries) => {
   popup.appendChild(translationContainer)
 
   dictionaryEntries.forEach((entry, i) => {
-    var entryHTML = document.createElement('div')
-    entryHTML.textContent = entry.word + ': ' + entry.pronunciation + ' ' + entry.translation
+    var entrySpan = document.createElement('span')
+    entrySpan.textContent = entry.word + ': ' + entry.pronunciation + ' ' + entry.translation)
 
-    var elButton = document.createElement('button')
-    elButton.setAttribute('id', 'copy-' + i)
-    elButton.setAttribute('data-clipboard-action', 'copy')
-    elButton.setAttribute('data-clipboard-target', '#popup div:nth-child(' + (i + 1) + ')')
-    elButton.textContent = 'Copy'
+    var entryButton = document.createElement('button')
+    entryButton.setAttribute('id', 'copy-' + i)
+    entryButton.setAttribute('data-clipboard-action', 'copy')
+    entryButton.setAttribute('data-clipboard-target', '#popup div:nth-child(' + (i + 1) + ') span')
+    entryButton.textContent = 'C'
     clipboards.push(new Clipboard('#copy-' + i))
 
-    entryHTML.appendChild(elButton)
+    var entryHTML = document.createElement('div')
+    entryHTML.appendChild(entryButton)
+    entryHTML.appendChild(entrySpan)
     translationContainer.appendChild(entryHTML)
   })
 
