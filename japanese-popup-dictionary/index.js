@@ -48,7 +48,7 @@ var displayTranslations = (dictionaryEntries) => {
 
   dictionaryEntries.forEach((entry, i) => {
     var entrySpan = document.createElement('span')
-    entrySpan.textContent = entry.word + ': ' + entry.pronunciation + ' ' + entry.translation)
+    entrySpan.textContent = entry.word + ': ' + entry.pronunciation + ' ' + entry.translation
 
     var entryButton = document.createElement('button')
     entryButton.setAttribute('id', 'copy-' + i)
