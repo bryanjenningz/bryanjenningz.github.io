@@ -134,7 +134,7 @@ var lookupWord = e => {
       
       var entries = dictionary[word]
       
-      if (entries.length > 0) {
+      if (entries) {
         results.push(...entries)
       }
     }
