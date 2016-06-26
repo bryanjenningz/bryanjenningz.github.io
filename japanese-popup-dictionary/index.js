@@ -60,6 +60,7 @@ var displayTranslations = (dictionaryEntries) => {
   popup.removeAttribute('hidden')
   copyButton.removeAttribute('hidden')
   clipboards.forEach(clipboard => clipboard.destroy())
+  clipboards = []
 
   var translationContainer = document.createElement('div')
   popup.appendChild(translationContainer)
