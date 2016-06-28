@@ -60,7 +60,7 @@ var displayTranslations = (dictionaryEntries) => {
   popup.removeAttribute('hidden')
 
   copyButton.removeAttribute('hidden')
-  var clickedIndex = clickedSpan && clickedSpan.getAttribute('data-index')
+  var clickedIndex = clickedSpan && clickedSpan.getAttribute('data-index') && Number(clickedSpan.getAttribute('data-index'))
   if (typeof clickedIndex === 'number') {
     // This makes it so that when you click the copy button, 20 characters before 
     // and after the selection spot will be copied. This is good for collecting the
