@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Chinese Popup Dictionary</title>
+    <style>
+      body {
+        padding-top: 10px;
+      }
+      #top-bar {
+        position: fixed;
+        background-color: cyan;
+        top: 0;
+        left: 0;
+        width: 600px;
+        padding: 5px;
+      }
+      input {
+        width: 140px;
+        height: 34px;
+        padding: 0 6px;
+      }
+      #top-bar button {
+        width: 100px;
+        height: 40px;
+      }
+      #text, #popup {
+        max-width: 600px;
+      }
+      #text {
+        margin-top: 50px;
+        font-size: 50px;
+        line-height: 105%;
+      }
+      #text p {
+        font-size: 30px;
+      }
+      #popup {
+        box-sizing: border-box;
+        font-size: 20px;
+        position: fixed;
+        background-color: cyan;
+        left: 0;
+        bottom: 0;
+        /* 30px padding on the right for the remove button */
+        max-height: 250px;
+        overflow-y: auto;
+        padding: 5px 30px 5px 5px;
+        word-break: break-word;
+      }
+      #popup div button {
+        padding: 5px; 
+        width: 30px;
+        height: 30px;
+      }
+      #popup-remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="top-bar">
+      <input placeholder="Paste in Chinese">
+      <button>Save</button>
+      <button id="copy-button" data-clipboard-action="copy" data-clipboard-target="#popup div" hidden>Copy</button>
+    </div>
+    <div id="text">
+      <p>Paste Chinese text into the input box, then press the "Save" button to save the text.</p>
+      <p>After that, you can click on any Chinese words that you don't know to look them up.</p>
+    </div>
+    <div id="popup" hidden></div>
+
+    <script src="clipboard.min.js"></script>
+    <script src="chinese-dictionary.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
