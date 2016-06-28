@@ -58,7 +58,17 @@ var dictionaryEntries = (function getFileSync(url) {
 var displayTranslations = (dictionaryEntries) => {
   popup.innerHTML = ''
   popup.removeAttribute('hidden')
+
   copyButton.removeAttribute('hidden')
+  var clickedIndex = clickedSpan && clickedSpan.getAttribute('data-index')
+  if (typeof clickedIndex === 'number') {
+    // This makes it so that when you click the copy button, 20 characters before 
+    // and after the selection spot will be copied. This is good for collecting the
+    // context of a new word. That you're learning.
+    var textToCopy = text.slice(Math.max(0, clickedIndex - 20), clickedIndex + 20)
+    copyButton.setAtrribute('data-clipboard-text', textToCopy)
+  }
+
   clipboards.forEach(clipboard => clipboard.destroy())
   clipboards = []
 
