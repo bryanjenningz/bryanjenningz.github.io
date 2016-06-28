@@ -66,7 +66,7 @@ var displayTranslations = (dictionaryEntries) => {
     // and after the selection spot will be copied. This is good for collecting the
     // context of a new word. That you're learning.
     var textToCopy = text.slice(Math.max(0, clickedIndex - 20), clickedIndex + 20)
-    copyButton.setAtrribute('data-clipboard-text', textToCopy)
+    copyButton.setAttribute('data-clipboard-text', textToCopy)
   }
 
   clipboards.forEach(clipboard => clipboard.destroy())
