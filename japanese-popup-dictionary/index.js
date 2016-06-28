@@ -62,11 +62,11 @@ var displayTranslations = (dictionaryEntries) => {
   copyButton.removeAttribute('hidden')
   var clickedIndex = clickedSpan && clickedSpan.getAttribute('data-index') && Number(clickedSpan.getAttribute('data-index'))
   if (typeof clickedIndex === 'number') {
-    // This makes it so that when you click the copy button, 20 characters before 
-    // and after the selection spot will be copied. This is good for collecting the
-    // context of a new word. That you're learning.
-    var textToCopy = text.slice(Math.max(0, clickedIndex - 20), clickedIndex + 20)
-    copyButton.setAttribute('data-clipboard-text', textToCopy)
+    // Make the copy button copy the context around the word that's selected.
+    var startIndex = Math.max(clickedIndex - 30, text.lastIndexOf('。', clickedIndex))
+    var endIndex = Math.min(clickedIndex + 30, text.indexOf('。', clickedIndex))
+    var copyButtonText = text.slice(startIndex + 1, endIndex).trim()
+    copyButton.setAttribute('data-clipboard-text', copyButtonText)
   }
 
   clipboards.forEach(clipboard => clipboard.destroy())
