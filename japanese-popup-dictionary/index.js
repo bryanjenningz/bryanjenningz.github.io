@@ -206,7 +206,7 @@ var colorTextRange = (startIndex, endIndex, color) => {
 
 button.addEventListener('click', saveText)
 textContainer.addEventListener('click', lookupWord)
-button.addEventListener('dblclick', e => {
+textContainer.addEventListener('dblclick', e => {
   if (e.target.getAttribute('data-index')) {
     selection = {start: Number(e.target.getAttribute('data-index'))}
   }
