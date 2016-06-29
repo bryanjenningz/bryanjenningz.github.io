@@ -20,7 +20,7 @@ var text
 var clickedSpan
 var clipboards = []
 var dictionary = {}
-(function getFileSync(url) {
+;(function getFileSync(url) {
   var request = new XMLHttpRequest()
   request.open('GET', url, false)
   request.send(null)
