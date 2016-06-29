@@ -16,10 +16,11 @@ popupRemoveButton.addEventListener('click', e => {
 
 var clipboard = new Clipboard('#copy-button')
 
-var text
-var clickedSpan
-var clipboards = []
-var dictionary = {}
+var text // stores the entire text that was saved
+var clickedSpan // stores the last clicked span
+var clipboards = [] // stores all the clipboards, used for copying the translations
+var dictionary = {} // what we will use to look up words
+var selection // stores the selection as {start: Number, end: Number} so users can select text ranges on mobile easily
 ;(function getFileSync(url) {
   var request = new XMLHttpRequest()
   request.open('GET', url, false)
@@ -113,6 +114,30 @@ var saveText = () => {
 }
 
 var lookupWord = e => {
+  if (selection && typeof selection.start === 'number') {
+    // If there's a highlighted selection, then unhighlight it and continue
+    // to looking up the word that was clicked.
+    if (typeof selection.end === 'number') {
+      colorTextRange(selection.start, selection.end, 'white')
+
+      // Otherwise, if the ending point is not a number, then that means that 
+      // we want to select the text from the start to the end (which is the 
+      // point we're touching right now)
+    } else {
+      var endIndex = e.target.getAttribute('data-index') && Number(e.target.getAttribute('data-index'))
+
+      // We clicked a valid character, then highlight the selection and make it copied to the clipboard.
+      if (typeof endIndex === 'number') {
+        colorTextRange(selection.start, endIndex, 'cyan')
+        copyButton.setAttribute('data-clipboard-text', text.slice(selection.start, endIndex))
+        return
+      // Otherwise, reset the selection to null and continue with looking up the clicked word.
+      } else {
+        selection = null
+      }
+    }
+  }
+
   if (clickedSpan) {
     clickedSpan.style.backgroundColor = 'white'
   }
@@ -155,8 +180,37 @@ var lookupWord = e => {
   }
 }
 
+var colorTextRange = (startIndex, endIndex, color) => {
+  // Make sure the start index is the lower value.
+  if (startIndex > endIndex) {
+    var temp = startIndex
+    startIndex = endIndex
+    endIndex = temp
+  }
+
+  var startEl = document.querySelector(`[data-index="${startIndex}"]`)
+  var endEl = document.querySelector(`[data-index="${endIndex}"]`)
+  
+  // Highlight all the text in between the start and end index.
+  for (var el = startEl; el !== endEl; el = el.nextSibling) {
+    el.style.backgroundColor = color
+  }
+  el.style.backgroundColor = color
+
+  if (color === 'white') {
+    selection = null
+  } else {
+    selection = {start: startIndex, end: endIndex}
+  }
+}
+
 button.addEventListener('click', saveText)
 textContainer.addEventListener('click', lookupWord)
+button.addEventListener('dblclick', e => {
+  if (e.target.getAttribute('data-index')) {
+    selection = {start: Number(e.target.getAttribute('data-index'))}
+  }
+})
 
 if (typeof localStorage.getItem('text') === 'string' &&
     localStorage.getItem('text').length > 0) {
