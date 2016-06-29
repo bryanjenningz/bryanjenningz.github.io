@@ -11,7 +11,6 @@ popupRemoveButton.setAttribute('id', 'popup-remove')
 popupRemoveButton.textContent = '✖'
 popupRemoveButton.addEventListener('click', e => {
   popup.setAttribute('hidden', true)
-  copyButton.setAttribute('hidden', true)
 })
 
 var clipboard = new Clipboard('#copy-button')
@@ -57,16 +56,6 @@ var selection // stores the selection as {start: Number, end: Number} so users c
 var displayTranslations = (dictionaryEntries) => {
   popup.innerHTML = ''
   popup.removeAttribute('hidden')
-
-  copyButton.removeAttribute('hidden')
-  var clickedIndex = clickedSpan && clickedSpan.getAttribute('data-index') && Number(clickedSpan.getAttribute('data-index'))
-  if (typeof clickedIndex === 'number') {
-    // Make the copy button copy the context around the word that's selected.
-    var startIndex = Math.max(clickedIndex - 30, text.lastIndexOf('。', clickedIndex))
-    var endIndex = Math.min(clickedIndex + 30, text.indexOf('。', clickedIndex))
-    var copyButtonText = text.slice(startIndex + 1, endIndex).trim()
-    copyButton.setAttribute('data-clipboard-text', copyButtonText)
-  }
 
   clipboards.forEach(clipboard => clipboard.destroy())
   clipboards = []
@@ -119,6 +108,7 @@ var lookupWord = e => {
     // to looking up the word that was clicked.
     if (typeof selection.end === 'number') {
       colorTextRange(selection.start, selection.end, 'white')
+      copyButton.setAttribute('hidden', true)
 
       // Otherwise, if the ending point is not a number, then that means that 
       // we want to select the text from the start to the end (which is the 
@@ -129,6 +119,7 @@ var lookupWord = e => {
       // We clicked a valid character, then highlight the selection and make it copied to the clipboard.
       if (typeof endIndex === 'number') {
         colorTextRange(selection.start, endIndex, 'cyan')
+        copyButton.removeAttribute('hidden')
         copyButton.setAttribute('data-clipboard-text', text.slice(selection.start, endIndex + 1))
         return
       // Otherwise, reset the selection to null and continue with looking up the clicked word.
