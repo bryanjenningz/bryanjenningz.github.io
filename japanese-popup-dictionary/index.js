@@ -20,40 +20,38 @@ var text
 var clickedSpan
 var clipboards = []
 var dictionary = {}
-var dictionaryEntries = (function getFileSync(url) {
-    var request = new XMLHttpRequest()
-    request.open('GET', url, false)
-    request.send(null)
-    return request.responseText
-  })(location.href.replace(/\/[^\/]+$/, '') + '/dictionary.txt')
-  .split('\n')
-  .map(function(line) {
-    var lineSplit = line.split(' ')
-    var word = lineSplit[0]
-    // If there's no pronunciation in the entry, that means the word is all hiragana or katakana, so just use the word as pronunciation
-    var hasPronunciation = /\[[^\]]+\]/.test(lineSplit[1])
-    var pronunciation =  hasPronunciation ? lineSplit[1].replace(/[\[\]]/g, '') : word
-    var translation = lineSplit.slice(hasPronunciation ? 2 : 1).join(' ')
+(function getFileSync(url) {
+  var request = new XMLHttpRequest()
+  request.open('GET', url, false)
+  request.send(null)
+  return request.responseText
+})(location.href.replace(/\/[^\/]+$/, '') + '/dictionary.txt')
+.split('\n')
+.forEach(function(line) {
+  var lineSplit = line.split(' ')
+  var word = lineSplit[0]
+  // If there's no pronunciation in the entry, that means the word is all hiragana or katakana, so just use the word as pronunciation
+  var hasPronunciation = /\[[^\]]+\]/.test(lineSplit[1])
+  var pronunciation =  hasPronunciation ? lineSplit[1].replace(/[\[\]]/g, '') : word
+  var translation = lineSplit.slice(hasPronunciation ? 2 : 1).join(' ')
 
-    // Add so the word comes up by word and by pronunciation
-    // The reason key is to see if the word was added to the dictionary entry for its word or its pronunciation
-    if (dictionary[word]) {
-      dictionary[word].push({word, pronunciation, translation, reason: 'word'})
+  // Add so the word comes up by word and by pronunciation
+  // The reason key is to see if the word was added to the dictionary entry for its word or its pronunciation
+  if (dictionary[word]) {
+    dictionary[word].push({word, pronunciation, translation, reason: 'word'})
+  } else {
+    dictionary[word] = [{word, pronunciation, translation, reason: 'word'}]
+  }
+
+  // If the pronunciation is the same as the word, we don't want to add a duplicate entry
+  if (pronunciation !== word) {
+    if (dictionary[pronunciation]) {
+      dictionary[pronunciation].push({word, pronunciation, translation, reason: 'pronunciation'})
     } else {
-      dictionary[word] = [{word, pronunciation, translation, reason: 'word'}]
+      dictionary[pronunciation] = [{word, pronunciation, translation, reason: 'pronunciation'}]
     }
-
-    // If the pronunciation is the same as the word, we don't want to add a duplicate entry
-    if (pronunciation !== word) {
-      if (dictionary[pronunciation]) {
-        dictionary[pronunciation].push({word, pronunciation, translation, reason: 'pronunciation'})
-      } else {
-        dictionary[pronunciation] = [{word, pronunciation, translation, reason: 'pronunciation'}]
-      }
-    }
-
-    return {word, pronunciation, translation}
-  })
+  }
+})
 
 var displayTranslations = (dictionaryEntries) => {
   popup.innerHTML = ''
@@ -138,11 +136,6 @@ var lookupWord = e => {
   for (var wordLength = 10; wordLength > 0; wordLength--) {
     var word = text.slice(wordStartIndex, wordStartIndex + wordLength)
     if (!wordsTried[word]) {
-      // Leaving this commented out until I'm sure the new dictionary strategy is better
-      // var entries = dictionaryEntries.filter(function(entry) {
-      //   return entry.word === word || entry.pronunciation === word
-      // })
-      
       var entries = dictionary[word]
       
       if (entries) {
