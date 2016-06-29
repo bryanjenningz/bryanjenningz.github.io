@@ -129,7 +129,7 @@ var lookupWord = e => {
       // We clicked a valid character, then highlight the selection and make it copied to the clipboard.
       if (typeof endIndex === 'number') {
         colorTextRange(selection.start, endIndex, 'cyan')
-        copyButton.setAttribute('data-clipboard-text', text.slice(selection.start, endIndex))
+        copyButton.setAttribute('data-clipboard-text', text.slice(selection.start, endIndex + 1))
         return
       // Otherwise, reset the selection to null and continue with looking up the clicked word.
       } else {
