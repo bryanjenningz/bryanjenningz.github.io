@@ -174,9 +174,7 @@ var lookupWord = e => {
 var colorTextRange = (startIndex, endIndex, color) => {
   // Make sure the start index is the lower value.
   if (startIndex > endIndex) {
-    var temp = startIndex
-    startIndex = endIndex
-    endIndex = temp
+    [startIndex, endIndex] = [endIndex, startIndex]
   }
 
   var startEl = document.querySelector(`[data-index="${startIndex}"]`)
